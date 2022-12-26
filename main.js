@@ -1,4 +1,4 @@
-function getComputerChoice(){
+ function getComputerChoice(){
     let num = Math.floor(Math.random() * 3) + 1;
     if (num == 1) {
         return "rock"
@@ -33,35 +33,57 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function playerChoice(){
-    let choice = prompt("Rock, Paper, or Scissor?");
-    choiceInLower = choice.toLowerCase();
-    return choiceInLower;
-
-}
-
-function gameWinner() {
-    if (winCounter == lossCounter) {
-        console.log("Draw.")
-    } else if (winCounter > lossCounter) {
-        console.log("You beat the computer.")
-    } else {
-        console.log("You lost to the computer.")
-    }
-}
 
 
 let winCounter = 0;
 let lossCounter = 0;
 
 function game() {
-    for (let i = 0; i < 5; i++) {
-
     const computerSelection = getComputerChoice();
-    const playerSelection = playerChoice();
-        console.log(playRound(playerSelection, computerSelection));
-    }
-    gameWinner()
+        console.log(playRound(playerChoice, computerSelection));
 }
 
-game()
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        playerChoice = button.className;
+        game();
+        winScore();
+        lossScore();
+        gameWinner();
+    })
+});
+
+
+const container = document.querySelector('.container');
+//Player Win Count
+const win = document.createElement('div');
+win.classList.add('win');
+container.appendChild(win);
+
+//Computer Loss Count
+const loss = document.createElement('div');
+loss.classList.add('loss');
+container.appendChild(loss);
+
+
+function winScore() {
+    win.textContent = "Wins: " + winCounter;
+}
+
+function lossScore() {
+    loss.textContent = "Loss: " + lossCounter;
+}
+
+function gameWinner() {
+    if (winCounter == 5) {
+        const gameWinner = document.createElement('div');
+        gameWinner.textContent = "You have beat the computer!"
+        container.appendChild(gameWinner);
+    } else if (lossCounter == 5) {
+        const gameWinner = document.createElement('div');
+        gameWinner.textContent = "You have lost to the computer!"
+        container.appendChild(gameWinner);
+    }
+}
